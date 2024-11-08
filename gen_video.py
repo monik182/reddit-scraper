@@ -12,8 +12,26 @@ def format_time(seconds):
 
 
 def generator(txt):
+    max_chars_per_line = 40
+    words = txt.split()
+    lines = []
+    current_line = []
+    current_length = 0
+
+    for word in words:
+        if current_length + len(word) + 1 > max_chars_per_line:  # +1 for space
+            lines.append(" ".join(current_line))
+            current_line = [word]
+            current_length = len(word)
+        else:
+            current_line.append(word)
+            current_length += len(word) + 1
+    
+    lines.append(" ".join(current_line))
+    final_text = "\n".join(lines)
+    
     return mp.TextClip(
-        txt,
+        final_text,
         font='Helvetica-Bold',
         fontsize=70,
         color='white',
@@ -58,7 +76,7 @@ def create_video(video_path, audio_path, output_path, cc_path = None):
 def main():
     video_file = Path("output_videos/video1.mp4")
     english_audio_file = Path("en.mp3")
-    output_video_file = Path("cropped_output_video_with_new_audio_SUBTITLES_STYLED.mp4")
+    output_video_file = Path("cropped_output_video_with_new_audio_SUBTITLES_STYLED2.mp4")
     cc_path = Path("en.srt")
 
     create_video(video_file, english_audio_file, output_video_file, cc_path)
