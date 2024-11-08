@@ -28,7 +28,7 @@ def replace_audio(video_path, audio_path, output_path):
     new_audio = afx.audio_normalize(new_audio)
     video = video.set_audio(new_audio)
     
-    video.write_videofile(output_path, codec='libx264', audio_codec='aac')
+    video.write_videofile(output_path, codec='libx264', audio_codec='aac', bitrate='5000k', preset='medium')
 
 def main():
     video_file = Path("output_videos/video1.mp4")
