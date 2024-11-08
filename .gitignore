@@ -164,3 +164,4 @@ cython_debug/
 /output_videos
 *.mp3
 *.mp4
+*.srt
