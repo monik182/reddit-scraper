@@ -8,6 +8,15 @@ def replace_audio(video_path, audio_path, output_path):
     output_path = str(output_path)
 
     video = mp.VideoFileClip(video_path)
+
+    # Calculate the target aspect ratio for portrait mode (1080x1920)
+    target_width = 1080
+    target_height = 1920
+    
+    # Resize and position video to fit into portrait mode, adding black bars if necessary
+    video = video.resize(height=target_height if video.h < target_height else None, width=target_width if video.w < target_width else None)
+    video = video.on_color(size=(target_width, target_height), color=(0, 0, 0), col_opacity=1)
+
     new_audio = mp.AudioFileClip(audio_path)
     
     video = video.set_audio(new_audio).set_duration(new_audio.duration)
@@ -24,7 +33,7 @@ def replace_audio(video_path, audio_path, output_path):
 def main():
     video_file = Path("output_videos/video1.mp4")
     english_audio_file = Path("en.mp3")
-    output_video_file = Path("output_video_with_new_audio.mp4")
+    output_video_file = Path("cropped_output_video_with_new_audio.mp4")
     
     replace_audio(video_file, english_audio_file, output_video_file)
 
