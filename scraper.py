@@ -4,14 +4,18 @@ import praw
 from dotenv import load_dotenv
 from pathlib import Path
 from openai import OpenAI
-
 import whisper
+
 # Initialize Whisper model (you need to have whisper installed and configured properly)
 # Whisper model sizes: "tiny, base, small, medium, large
-whisper_model = whisper.load_model("large")
+whisper_model = whisper.load_model("base")
+
 load_dotenv()
 
 client = OpenAI()
+
+use_openai = False
+
 
 reddit = praw.Reddit(
     client_id=os.getenv('REDDIT_CLIENT_ID'),
@@ -20,7 +24,7 @@ reddit = praw.Reddit(
 )
 
 
-def translate_text(text, target_language="es"):
+def translate_text(text, target_language="en"):
     response = client.chat.completions.create(model="gpt-3.5-turbo",
     messages=[
         {"role": "user", "content": f"Translate the following text to {target_language}:\n{text}"}
@@ -60,19 +64,20 @@ def format_time(seconds):
     return f"{hours:02}:{minutes:02}:{int(seconds):02},{milliseconds:03}"
 
 
-def generate_cc(audio_path):
-    result = whisper_model.transcribe(audio_path)
+def generate_cc(audio_path, language="en"):
+    result = whisper_model.transcribe(audio_path, language=language)
     segments = result['segments']
 
     cc_lines = []
-    for segment in segments:
+    for i, segment in enumerate(segments):
         start = segment['start']
         end = segment['end']
         text = segment['text']
-        cc_lines.append(f"{format_time(start)} --> {format_time(end)}\n{text}\n")
+        if text.strip():
+            cc_lines.append(f"{i + 1}\n{format_time(start)} --> {format_time(end)}\n{text}\n\n")
 
     cc_file_path = Path(audio_path).with_suffix(".srt")
-    with open(cc_file_path, "w") as cc_file:
+    with open(cc_file_path, "w", encoding="utf-8") as cc_file:
         cc_file.writelines(cc_lines)
 
 
@@ -83,19 +88,19 @@ def main():
     id = post['id']
     full_text = post['title'] + post['content']
     target_language = "es-419"
-    # translated_text = translate_text(full_text, target_language)
 
     title = post['title'].replace(" ", "_").lower()
     clean_title = ''.join(e for e in title if e.isalnum() or e == "_").lower()
     file_name = f"{id}_en_{clean_title}.mp3"
     translate_text_file_name = f"{id}_{target_language}_{clean_title}.mp3"
 
-    # print(file_name)
-    # print(translate_text_file_name)
-    # create_audio(full_text, file_name)
-    # create_audio(translated_text, translate_text_file_name)
-    # generate_cc(file_name)
-    generate_cc("en.mp3")
+    if use_openai:
+        translated_text = translate_text(full_text, target_language)
+        create_audio(full_text, file_name)
+        create_audio(translated_text, translate_text_file_name)
+        generate_cc(file_name)
+        generate_cc(translate_text_file_name, target_language)
+    generate_cc("en.mp3", "es")
 
 
 if __name__ == "__main__":
