@@ -73,12 +73,38 @@ def generate_cc(audio_path, language="en"):
         start = segment['start']
         end = segment['end']
         text = segment['text']
-        if text.strip():
-            cc_lines.append(f"{i + 1}\n{format_time(start)} --> {format_time(end)}\n{text}\n\n")
 
-    cc_file_path = Path(audio_path).with_suffix(".srt")
-    with open(cc_file_path, "w", encoding="utf-8") as cc_file:
+        max_length = 30
+        if len(text) > max_length:
+            words = text.split()
+            chunks = []
+            current_chunk = []
+            current_length = 0
+
+            for word in words:
+                if current_length + len(word) + 1 > max_length:
+                    chunks.append(' '.join(current_chunk))
+                    current_chunk = [word]
+                    current_length = len(word)
+                else:
+                    current_chunk.append(word)
+                    current_length += len(word) + 1
+
+            chunks.append(' '.join(current_chunk))
+            text_chunks = chunks
+        else:
+            text_chunks = [text]
+
+        for j, chunk in enumerate(text_chunks):
+            chunk_start = start if j == 0 else start + (j * (end - start) / len(text_chunks))
+            chunk_end = start + ((j + 1) * (end - start) / len(text_chunks))
+            cc_lines.append(f"{len(cc_lines) + 1}\n{format_time(chunk_start)} --> {format_time(chunk_end)}\n{chunk}\n\n")
+    
+    cc_file_path = Path(f"{audio_path}").with_suffix(".srt")
+    with open(cc_file_path, "w") as cc_file:
         cc_file.writelines(cc_lines)
+
+    return str(cc_file_path)
 
 
 def main():
