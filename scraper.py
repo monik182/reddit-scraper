@@ -5,6 +5,10 @@ from dotenv import load_dotenv
 from pathlib import Path
 from openai import OpenAI
 
+import whisper
+# Initialize Whisper model (you need to have whisper installed and configured properly)
+# Whisper model sizes: "tiny, base, small, medium, large
+whisper_model = whisper.load_model("large")
 load_dotenv()
 
 client = OpenAI()
@@ -49,6 +53,29 @@ def scrape_post(url):
     return post_data
 
 
+def format_time(seconds):
+    hours, remainder = divmod(int(seconds), 3600)
+    minutes, seconds = divmod(remainder, 60)
+    milliseconds = int((seconds - int(seconds)) * 1000)
+    return f"{hours:02}:{minutes:02}:{int(seconds):02},{milliseconds:03}"
+
+
+def generate_cc(audio_path):
+    result = whisper_model.transcribe(audio_path)
+    segments = result['segments']
+
+    cc_lines = []
+    for segment in segments:
+        start = segment['start']
+        end = segment['end']
+        text = segment['text']
+        cc_lines.append(f"{format_time(start)} --> {format_time(end)}\n{text}\n")
+
+    cc_file_path = Path(audio_path).with_suffix(".srt")
+    with open(cc_file_path, "w") as cc_file:
+        cc_file.writelines(cc_lines)
+
+
 def main():
     url = 'https://www.reddit.com/r/ChatGPT/comments/1glqv2o/chatgpt_saved_my_life_and_im_still_freaking_out/'
     post = scrape_post(url)
@@ -56,7 +83,7 @@ def main():
     id = post['id']
     full_text = post['title'] + post['content']
     target_language = "es-419"
-    translated_text = translate_text(full_text, target_language)
+    # translated_text = translate_text(full_text, target_language)
 
     title = post['title'].replace(" ", "_").lower()
     clean_title = ''.join(e for e in title if e.isalnum() or e == "_").lower()
@@ -65,8 +92,10 @@ def main():
 
     # print(file_name)
     # print(translate_text_file_name)
-    create_audio(full_text, file_name)
-    create_audio(translated_text, translate_text_file_name)
+    # create_audio(full_text, file_name)
+    # create_audio(translated_text, translate_text_file_name)
+    # generate_cc(file_name)
+    generate_cc("en.mp3")
 
 
 if __name__ == "__main__":
