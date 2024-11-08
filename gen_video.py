@@ -12,7 +12,7 @@ def format_time(seconds):
 
 
 def generator(txt):
-    max_chars_per_line = 40
+    max_chars_per_line = 25
     words = txt.split()
     lines = []
     current_line = []
@@ -76,7 +76,7 @@ def create_video(video_path, audio_path, output_path, cc_path = None):
 def main():
     video_file = Path("output_videos/video1.mp4")
     english_audio_file = Path("en.mp3")
-    output_video_file = Path("cropped_output_video_with_new_audio_SUBTITLES_STYLED2.mp4")
+    output_video_file = Path("cropped_output_video_with_new_audio_SUBTITLES_STYLED3.mp4")
     cc_path = Path("en.srt")
 
     create_video(video_file, english_audio_file, output_video_file, cc_path)
