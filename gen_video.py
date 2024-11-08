@@ -12,7 +12,16 @@ def format_time(seconds):
 
 
 def generator(txt):
-    return mp.TextClip(txt, font='Arial', fontsize=24, color='white')
+    return mp.TextClip(
+        txt,
+        font='Helvetica-Bold',
+        fontsize=70,
+        color='white',
+        stroke_color='black',
+        stroke_width=4,
+        align='center',
+        kerning=2,
+    )
 
 
 def create_video(video_path, audio_path, output_path, cc_path = None):
@@ -39,7 +48,7 @@ def create_video(video_path, audio_path, output_path, cc_path = None):
 
     if cc_path:
         subtitles = SubtitlesClip(str(cc_path), generator)
-        video = mp.CompositeVideoClip([video, subtitles.set_position(('center', 'bottom'))])
+        video = mp.CompositeVideoClip([video, subtitles.set_position(('center', 'center'))])
     elif cc_path is None or os.path.getsize(cc_path) == 0:
         print("Warning: Subtitle file is empty or not created. No subtitles will be added.")
     
@@ -49,10 +58,11 @@ def create_video(video_path, audio_path, output_path, cc_path = None):
 def main():
     video_file = Path("output_videos/video1.mp4")
     english_audio_file = Path("en.mp3")
-    output_video_file = Path("cropped_output_video_with_new_audio_SUBTITLES.mp4")
+    output_video_file = Path("cropped_output_video_with_new_audio_SUBTITLES_STYLED.mp4")
     cc_path = Path("en.srt")
 
     create_video(video_file, english_audio_file, output_video_file, cc_path)
+
 
 if __name__ == "__main__":
     main()
