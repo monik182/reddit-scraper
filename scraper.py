@@ -87,7 +87,7 @@ def main():
     url = 'https://www.reddit.com/r/ChatGPT/comments/1glqv2o/chatgpt_saved_my_life_and_im_still_freaking_out/'
     post = scrape_post(url)
 
-    id = post['id']
+    post_id = post['id']
     full_text = post['title'] + post['content']
     target_language = "es-419"
 

@@ -52,6 +52,7 @@ def generate_youtube_metadata(post_path):
     metadata_filename = post_path.stem + "_metadata.json"
     metadata_filepath = input_dir / metadata_filename
     metadata = {
+        "title": post_title,
         "summary": summary.strip(),
         "tags": tags_list
     }
