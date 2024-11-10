@@ -1,0 +1,59 @@
+import os
+import praw
+import json
+from pathlib import Path
+from dotenv import load_dotenv
+import time
+
+load_dotenv()
+
+reddit = praw.Reddit(
+    client_id=os.getenv('REDDIT_CLIENT_ID'),
+    client_secret=os.getenv('REDDIT_CLIENT_SECRET'),
+    user_agent=os.getenv('REDDIT_USER_AGENT')
+)
+
+output_dir = Path("output_reddit_posts")
+output_dir.mkdir(exist_ok=True)
+
+log_file = output_dir / "scraped_posts_log.txt"
+
+
+def load_logged_post_ids():
+    if not log_file.exists():
+        return set()
+    with open(log_file, "r", encoding="utf-8") as log:
+        return set(line.split("|")[1].strip() for line in log.readlines())
+
+
+def scrape_long_posts(subreddit_name, limit=3):
+    subreddit = reddit.subreddit(subreddit_name)
+
+    scraped_count = 0
+    logged_post_ids = load_logged_post_ids()
+
+    submissions = subreddit.top(limit=None, time_filter='all')
+
+    for submission in submissions:
+        if scraped_count >= limit:
+            break
+        if submission.id in logged_post_ids:
+            continue
+
+        if len(submission.selftext) >= 1000:
+        # if len(submission.selftext) >= 1000 and ("edit" in submission.selftext.lower() or "update" in submission.selftext.lower()):
+
+            timestamp = time.strftime('%Y%m%d-%H%M%S', time.gmtime(submission.created_utc))
+            filename = f"{timestamp}-{submission.id}.json"
+            filepath = output_dir / filename
+
+            with open(filepath, "w", encoding="utf-8") as file:
+                json.dump(submission.__dict__, file, default=str, indent=4)
+
+            with open(log_file, "a", encoding="utf-8") as log:
+                log.write(f"{time.strftime('%Y-%m-%d %H:%M:%S', time.gmtime(submission.created_utc))} | {submission.id} | {submission.url}\n")
+
+            scraped_count += 1
+
+if __name__ == "__main__":
+    scrape_long_posts("learnpython", limit=3)
