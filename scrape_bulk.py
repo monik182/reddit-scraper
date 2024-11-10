@@ -16,10 +16,9 @@ reddit = praw.Reddit(
 output_dir = Path("output_reddit_posts")
 output_dir.mkdir(exist_ok=True)
 
-log_file = output_dir / "scraped_posts_log.txt"
 
-
-def load_logged_post_ids():
+def load_logged_post_ids(subreddit_name):
+    log_file = output_dir / f"{subreddit_name}_scraped_posts_log.txt"
     if not log_file.exists():
         return set()
     with open(log_file, "r", encoding="utf-8") as log:
@@ -30,7 +29,8 @@ def scrape_long_posts(subreddit_name, limit=3):
     subreddit = reddit.subreddit(subreddit_name)
 
     scraped_count = 0
-    logged_post_ids = load_logged_post_ids()
+    logged_post_ids = load_logged_post_ids(subreddit_name)
+    log_file = output_dir / f"{subreddit_name}_scraped_posts_log.txt"
 
     submissions = subreddit.top(limit=None, time_filter='all')
 
