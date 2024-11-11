@@ -42,7 +42,7 @@ def generator(txt):
     )
 
 
-def create_video(video_path, audio_path, output_path, cc_path = None):
+def generate_video(video_path, audio_path, output_path, cc_path = None):
     video_path = str(video_path)
     audio_path = str(audio_path)
     output_path = str(output_path)
@@ -79,7 +79,7 @@ def main():
     output_video_file = Path("cropped_output_video_with_new_audio_SUBTITLES_STYLED3.mp4")
     cc_path = Path("en.srt")
 
-    create_video(video_file, english_audio_file, output_video_file, cc_path)
+    generate_video(video_file, english_audio_file, output_video_file, cc_path)
 
 
 if __name__ == "__main__":

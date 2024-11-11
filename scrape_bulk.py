@@ -14,11 +14,12 @@ reddit = praw.Reddit(
 )
 
 output_dir = Path("output_reddit_posts")
+root_dir = Path(".")
 output_dir.mkdir(exist_ok=True)
 
 
 def load_logged_post_ids(subreddit_name):
-    log_file = output_dir / f"{subreddit_name}_scraped_posts_log.txt"
+    log_file = root_dir / f"{subreddit_name}_scraped_posts_log.txt"
     if not log_file.exists():
         return set()
     with open(log_file, "r", encoding="utf-8") as log:
@@ -30,7 +31,7 @@ def scrape_long_posts(subreddit_name, limit=3):
 
     scraped_count = 0
     logged_post_ids = load_logged_post_ids(subreddit_name)
-    log_file = output_dir / f"{subreddit_name}_scraped_posts_log.txt"
+    log_file = root_dir / f"{subreddit_name}_scraped_posts_log.txt"
 
     submissions = subreddit.top(limit=None, time_filter='all')
 
@@ -44,7 +45,7 @@ def scrape_long_posts(subreddit_name, limit=3):
         # if len(submission.selftext) >= 1000 and ("edit" in submission.selftext.lower() or "update" in submission.selftext.lower()):
 
             timestamp = time.strftime('%Y%m%d-%H%M%S', time.gmtime(submission.created_utc))
-            filename = f"{timestamp}-{submission.id}.json"
+            filename = f"{timestamp}-{subreddit_name}-{submission.id}.json"
             filepath = output_dir / filename
 
             with open(filepath, "w", encoding="utf-8") as file:
@@ -56,4 +57,4 @@ def scrape_long_posts(subreddit_name, limit=3):
             scraped_count += 1
 
 if __name__ == "__main__":
-    scrape_long_posts("learnpython", limit=3)
+    scrape_long_posts("learnpython", limit=5)
