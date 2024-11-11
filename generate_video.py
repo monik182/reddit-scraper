@@ -4,6 +4,7 @@ from pathlib import Path
 import moviepy.audio.fx.all as afx
 from moviepy.video.tools.subtitles import SubtitlesClip
 
+
 def format_time(seconds):
     hours, remainder = divmod(int(seconds), 3600)
     minutes, seconds = divmod(remainder, 60)
@@ -19,17 +20,17 @@ def generator(txt):
     current_length = 0
 
     for word in words:
-        if current_length + len(word) + 1 > max_chars_per_line:  # +1 for space
+        if current_length + len(word) + 1 > max_chars_per_line:
             lines.append(" ".join(current_line))
             current_line = [word]
             current_length = len(word)
         else:
             current_line.append(word)
             current_length += len(word) + 1
-    
+
     lines.append(" ".join(current_line))
     final_text = "\n".join(lines)
-    
+
     return mp.TextClip(
         final_text,
         font='Helvetica-Bold',

@@ -4,8 +4,8 @@ from pathlib import Path
 
 from generate_audio import generate_audio
 
-from gen_thumbnail import generate_thumbnail
-from gen_video import generate_video
+from generate_thumbnail import generate_thumbnail
+from generate_video import generate_video
 from scraper import generate_cc
 from youtube_metadata import generate_youtube_metadata
 from scrape_bulk import scrape_long_posts
