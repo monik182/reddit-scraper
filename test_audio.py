@@ -3,6 +3,8 @@ import json
 import random
 from pathlib import Path
 
+from generate_audio import generate_audio
+
 from main import load_logged_video_ids
 
 from scraper import create_audio, translate_text
@@ -19,7 +21,7 @@ def main():
 
     scraped_posts = list(reddit_output_dir.glob("*.json"))
 
-    posts_without_videos = [post for post in scraped_posts if post.stem not in logged_video_ids and  subreddit_name in post.stem]
+    posts_without_videos = [post for post in scraped_posts if post.stem not in logged_video_ids and "d47xg3" in post.stem]
     selected_post = random.choice(posts_without_videos)
     post_id = selected_post.stem
     output_folder = output_dir / post_id
@@ -30,9 +32,14 @@ def main():
         post_data = json.load(file)
         content = post_data.get("selftext", "")
         title = post_data.get("title", "")
+        id = post_data.get("id", "")
+        
+        print(f"ID: {id}")
         full_text = title + "\n" + content
-        translated_text = translate_text(full_text, "es")
-        create_audio(translated_text, str(audio_path), "nova")
+        # translated_text = translate_text(full_text, "es")
+        # create_audio(translated_text, str(audio_path), "nova")
+        # create_audio(full_text, str(audio_path), "echo", 1.2)
+        generate_audio(full_text, str(audio_path), "echo", 1.2)
 
 if __name__ == "__main__":
     main()
