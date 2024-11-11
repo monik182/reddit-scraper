@@ -33,12 +33,14 @@ def translate_text(text, target_language="en"):
     temperature=0.3)
     return response.choices[0].message.content
 
-def create_audio(text, file_name="speech.mp3", voice="echo"):
+def create_audio(text, file_name="speech.mp3", voice="echo", speed=1.0):
     speech_file_path = Path(__file__).parent / file_name
+
     response = client.audio.speech.create(
-        model="tts-1",
+        model="tts-1-hd",
+        input=text,
         voice=voice,
-        input=text
+        speed=speed,
     )
 
     response.stream_to_file(speech_file_path)

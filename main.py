@@ -1,8 +1,12 @@
 import json
 import random
 from pathlib import Path
+
+from generate_audio import generate_audio
+
+from gen_thumbnail import generate_thumbnail
 from gen_video import generate_video
-from scraper import generate_cc, create_audio
+from scraper import generate_cc
 from youtube_metadata import generate_youtube_metadata
 from scrape_bulk import scrape_long_posts
 from dotenv import load_dotenv
@@ -14,8 +18,10 @@ output_dir = Path("output")
 root_dir = Path(".")
 reddit_output_dir = Path("output_reddit_posts")
 video_input_dir = Path("output_videos")
+thumbnail_output_dir = Path("output_thumbnails")
 output_dir.mkdir(exist_ok=True)
 video_log_file = root_dir / "generated_videos_log.txt"
+template_image = root_dir / "template_image.png"
 
 
 def load_logged_video_ids():
@@ -56,7 +62,7 @@ def main(subreddit_name="learnpython"):
         title = post_data.get("title", "")
         full_text = title + "\n" + content
         print(f"2. ----------- Generating audio for post: {post_id} -----------")
-        create_audio(full_text, str(audio_path))
+        generate_audio(full_text, str(audio_path))
 
     print(f"3. ----------- Generating CC for post: {post_id} -----------")
     cc_path = generate_cc(str(audio_path))
@@ -68,11 +74,14 @@ def main(subreddit_name="learnpython"):
     selected_video = random.choice(video_files)
     print(selected_video)
 
-    print(f"5. ----------- Generating video for post: {post_id} -----------")
+    print("5. ----------- Generate Thumbnail -----------")
+    generate_thumbnail(title, template_image, str(output_folder / f"{post_id}_thumbnail.png"))
+
+    print(f"6. ----------- Generating video for post: {post_id} -----------")
     output_video_path = output_folder / f"{post_id}_final_video.mp4"
     generate_video(str(selected_video), str(audio_path), str(output_video_path), str(cc_path))
 
-    print(f"6. ----------- Logging generated video: {post_id} -----------")
+    print(f"7. ----------- Logging generated video: {post_id} -----------")
     log_generated_video(post_id, str(output_video_path))
 
     ## Generate YouTube metadata
@@ -82,4 +91,5 @@ def main(subreddit_name="learnpython"):
     # create_thumbnail(metadata_path)
 
 if __name__ == "__main__":
-    main(subreddit_name="learnpython")
+    # main(subreddit_name="learnpython")
+    main(subreddit_name="FamilySecrets")
