@@ -41,7 +41,7 @@ def main(subreddit_name="learnpython"):
 
     scraped_posts = list(reddit_output_dir.glob("*.json"))
 
-    posts_without_videos = [post for post in scraped_posts if post.stem not in logged_video_ids and  subreddit_name in post.stem]
+    posts_without_videos = [post for post in scraped_posts if post.stem not in logged_video_ids and subreddit_name in post.stem]
 
     if not posts_without_videos:
         scrape_long_posts(subreddit_name, limit=10)
@@ -71,7 +71,8 @@ def main(subreddit_name="learnpython"):
     print(f"4. ----------- Selected video from {video_input_dir}: {len(video_files)} -----------")
     if not video_files:
         raise FileNotFoundError("No video files found in the video folder.")
-    selected_video = random.choice(video_files)
+    # selected_video = random.choice(video_files)
+    selected_video = video_files[0]
     print(selected_video)
 
     print("5. ----------- Generate Thumbnail -----------")
@@ -84,11 +85,8 @@ def main(subreddit_name="learnpython"):
     print(f"7. ----------- Logging generated video: {post_id} -----------")
     log_generated_video(post_id, str(output_video_path))
 
-    ## Generate YouTube metadata
-    # metadata_path = output_folder / f"{post_id}_metadata.json"
-    # generate_youtube_metadata(selected_post)
-    ## Create thumbnail for the video
-    # create_thumbnail(metadata_path)
+    metadata_path = output_folder / f"{post_id}_metadata.json"
+    generate_youtube_metadata(selected_post, metadata_path)
 
 if __name__ == "__main__":
     # main(subreddit_name="learnpython")

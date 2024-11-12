@@ -10,7 +10,7 @@ client = OpenAI()
 input_dir = Path("output_reddit_posts")
 
 
-def generate_youtube_metadata(post_path):
+def generate_youtube_metadata(post_path, output_path):
     with open(post_path, "r", encoding="utf-8") as file:
         post_data = json.load(file)
 
@@ -50,13 +50,13 @@ def generate_youtube_metadata(post_path):
     print(", ".join(tags_list))
 
     metadata_filename = post_path.stem + "_metadata.json"
-    metadata_filepath = input_dir / metadata_filename
+    # metadata_filepath = input_dir / metadata_filename
     metadata = {
         "title": post_title,
         "summary": summary.strip(),
         "tags": tags_list
     }
-    with open(metadata_filepath, "w", encoding="utf-8") as metadata_file:
+    with open(output_path, "w", encoding="utf-8") as metadata_file:
         json.dump(metadata, metadata_file, indent=4)
 
 if __name__ == "__main__":
