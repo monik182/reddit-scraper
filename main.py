@@ -80,15 +80,15 @@ def main(subreddit_name="learnpython"):
     print("5. ----------- Generate Thumbnail -----------")
     generate_thumbnail(censored_title, template_image, str(output_folder / f"{post_id}_thumbnail.png"))
 
-    print(f"6. ----------- Generating video for post: {post_id} -----------")
-    output_video_path = output_folder / f"{post_id}_final_video.mp4"
-    generate_video(str(selected_video), str(audio_path), str(output_video_path), str(cc_path))
-
-    print("7. ----------- Generate metadata -----------")
+    print("6. ----------- Generate metadata -----------")
     metadata_path = output_folder / f"{post_id}_metadata.json"
     generate_youtube_metadata(selected_post, metadata_path)
 
-    print(f"8. ----------- Generate video: {post_id} -----------")
+    print(f"7. ----------- Generating video for post: {post_id} -----------")
+    output_video_path = output_folder / f"{post_id}_final_video.mp4"
+    generate_video(str(selected_video), str(audio_path), str(output_video_path), str(cc_path))
+
+    print(f"8. ----------- Logging generated video: {post_id} -----------")
     log_generated_video(post_id, str(output_video_path))
 
 if __name__ == "__main__":
