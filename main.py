@@ -70,12 +70,11 @@ def main(subreddit_name="learnpython"):
     cc_path = generate_cc(str(audio_path))
 
     video_files = list(video_input_dir.glob("*.mp4"))
-    print(f"4. ----------- Selected video from {video_input_dir}: {len(video_files)} -----------")
     if not video_files:
         raise FileNotFoundError("No video files found in the video folder.")
-    # selected_video = random.choice(video_files)
-    selected_video = video_files[0]
-    print(selected_video)
+    selected_video = random.choice(video_files)
+    print(f"4. ----------- Selected video from {video_input_dir}: {len(video_files)} | {selected_video} -----------")
+
 
     print("5. ----------- Generate Thumbnail -----------")
     generate_thumbnail(censored_title, template_image, str(output_folder / f"{post_id}_thumbnail.png"))

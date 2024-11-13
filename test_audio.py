@@ -21,7 +21,7 @@ def main():
 
     scraped_posts = list(reddit_output_dir.glob("*.json"))
 
-    posts_without_videos = [post for post in scraped_posts if post.stem not in logged_video_ids and "d47xg3" in post.stem]
+    posts_without_videos = [post for post in scraped_posts if post.stem not in logged_video_ids and subreddit_name in post.stem]
     selected_post = random.choice(posts_without_videos)
     post_id = selected_post.stem
     output_folder = output_dir / post_id
