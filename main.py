@@ -1,9 +1,8 @@
 import json
 import random
 from pathlib import Path
-
+from profanity_censor import censor_profanities
 from generate_audio import generate_audio
-
 from generate_thumbnail import generate_thumbnail
 from generate_video import generate_video
 from scraper import generate_cc
@@ -58,9 +57,12 @@ def main(subreddit_name="learnpython"):
     audio_path = output_folder / f"{post_id}.mp3"
     with open(selected_post, "r", encoding="utf-8") as file:
         post_data = json.load(file)
-        content = post_data.get("selftext", "")
         title = post_data.get("title", "")
+        content = post_data.get("selftext", "")
         full_text = title + "\n" + content
+        censored_title = censor_profanities(title)
+        censored_content = censor_profanities(content)
+        full_text = censored_title + "\n" + censored_content
         print(f"2. ----------- Generating audio for post: {post_id} -----------")
         generate_audio(full_text, str(audio_path))
 
@@ -76,17 +78,18 @@ def main(subreddit_name="learnpython"):
     print(selected_video)
 
     print("5. ----------- Generate Thumbnail -----------")
-    generate_thumbnail(title, template_image, str(output_folder / f"{post_id}_thumbnail.png"))
+    generate_thumbnail(censored_title, template_image, str(output_folder / f"{post_id}_thumbnail.png"))
 
     print(f"6. ----------- Generating video for post: {post_id} -----------")
     output_video_path = output_folder / f"{post_id}_final_video.mp4"
     generate_video(str(selected_video), str(audio_path), str(output_video_path), str(cc_path))
 
-    print(f"7. ----------- Logging generated video: {post_id} -----------")
-    log_generated_video(post_id, str(output_video_path))
-
+    print("7. ----------- Generate metadata -----------")
     metadata_path = output_folder / f"{post_id}_metadata.json"
     generate_youtube_metadata(selected_post, metadata_path)
+
+    print(f"8. ----------- Generate video: {post_id} -----------")
+    log_generated_video(post_id, str(output_video_path))
 
 if __name__ == "__main__":
     # main(subreddit_name="learnpython")
