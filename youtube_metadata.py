@@ -49,8 +49,6 @@ def generate_youtube_metadata(post_path, output_path):
     print("\nTags:")
     print(", ".join(tags_list))
 
-    metadata_filename = post_path.stem + "_metadata.json"
-    # metadata_filepath = input_dir / metadata_filename
     metadata = {
         "title": post_title,
         "summary": summary.strip(),
@@ -58,11 +56,3 @@ def generate_youtube_metadata(post_path, output_path):
     }
     with open(output_path, "w", encoding="utf-8") as metadata_file:
         json.dump(metadata, metadata_file, indent=4)
-
-if __name__ == "__main__":
-    scraped_posts = list(input_dir.glob("*.json"))
-
-    if scraped_posts:
-        generate_youtube_metadata(scraped_posts[0])
-    else:
-        print("No scraped posts found in the output directory.")

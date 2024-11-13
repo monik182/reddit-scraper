@@ -25,7 +25,9 @@ reddit = praw.Reddit(
 
 
 def translate_text(text, target_language="en"):
-    response = client.chat.completions.create(model="gpt-3.5-turbo",
+    response = client.chat.completions.create(
+    # model="gpt-3.5-turbo",
+    model="gpt-4o-mini",
     messages=[
         {"role": "user", "content": f"Translate the following text to {target_language}:\n{text}"}
     ],

@@ -42,10 +42,9 @@ def scrape_long_posts(subreddit_name, limit=3):
             continue
 
         if len(submission.selftext) >= 1000:
-        # if len(submission.selftext) >= 1000 and ("edit" in submission.selftext.lower() or "update" in submission.selftext.lower()):
 
             timestamp = time.strftime('%Y%m%d-%H%M%S', time.gmtime(submission.created_utc))
-            filename = f"{timestamp}-{subreddit_name}-{submission.id}.json"
+            filename = f"{submission.id}-{subreddit_name}-{timestamp}.json"
             filepath = output_dir / filename
 
             with open(filepath, "w", encoding="utf-8") as file:
@@ -57,4 +56,6 @@ def scrape_long_posts(subreddit_name, limit=3):
             scraped_count += 1
 
 if __name__ == "__main__":
-    scrape_long_posts("learnpython", limit=5)
+    scrape_long_posts("MaliciousCompliance", limit=20)
+
+    # AmItheAsshole
