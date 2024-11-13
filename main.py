@@ -9,6 +9,7 @@ from scraper import generate_cc
 from youtube_metadata import generate_youtube_metadata
 from scrape_bulk import scrape_long_posts
 from dotenv import load_dotenv
+import argparse
 
 load_dotenv()
 
@@ -91,5 +92,8 @@ def main(subreddit_name="learnpython"):
     log_generated_video(post_id, str(output_video_path))
 
 if __name__ == "__main__":
-    # main(subreddit_name="learnpython")
-    main(subreddit_name="FamilySecrets")
+    parser = argparse.ArgumentParser(description="Run the main video generation pipeline.")
+    parser.add_argument("subreddit_name", type=str, help="The name of the subreddit to scrape posts from.")
+    args = parser.parse_args()
+
+    main(subreddit_name=args.subreddit_name)
