@@ -33,19 +33,21 @@ def preview_subtitle_old(text, output_image_path):
 def preview_subtitle(text, output_image_path):
     width = 1080
     height = 1920
+    text = text.upper()
 
     subtitle_clip = mp.TextClip(
         text,
-        font='Helvetica-Bold',
-        fontsize=70,
+        font='Arial-Black',
+        # font='Futura-Extra-Bold',
+        fontsize=80,
         color='white',
         stroke_color='black',
-        stroke_width=4,
+        stroke_width=5,
         align='center',
         kerning=2,
     )
 
-    background = Image.new("RGB", (width, height), "red")
+    background = Image.new("RGB", (width, height), "blue")
 
     subtitle_clip = subtitle_clip.set_position(('center', 'center')).set_duration(1)
     frame = subtitle_clip.get_frame(0)
@@ -59,4 +61,4 @@ def preview_subtitle(text, output_image_path):
     background.save(output_image_path)
 
 
-preview_subtitle("chat gpt saved my life and", "subtitle_preview.png")
+preview_subtitle("chat gpt about", "subtitle_preview.png")
