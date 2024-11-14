@@ -8,6 +8,7 @@ from generate_video import generate_video
 from scraper import generate_cc
 from youtube_metadata import generate_youtube_metadata
 from scrape_bulk import scrape_long_posts
+from youtube_upload import upload_video
 from dotenv import load_dotenv
 import argparse
 
@@ -82,7 +83,7 @@ def main(subreddit_name="learnpython"):
 
     print("6. ----------- Generate metadata -----------")
     metadata_path = output_folder / f"{post_id}_metadata.json"
-    generate_youtube_metadata(selected_post, metadata_path)
+    metadata = generate_youtube_metadata(selected_post, metadata_path)
 
     print(f"7. ----------- Generating video for post: {post_id} -----------")
     output_video_path = output_folder / f"{post_id}_final_video.mp4"
@@ -90,6 +91,12 @@ def main(subreddit_name="learnpython"):
 
     print(f"8. ----------- Logging generated video: {post_id} -----------")
     log_generated_video(post_id, str(output_video_path))
+
+    print(f"9. ----------- Upload generated video to YouTube: {post_id} -----------")
+    metadata = json.loads(metadata_path.read_text())
+    tags = metadata.get("tags", [])
+    description = f"{metadata.get('summary', '')} \n\nTags: {', '.join([f'#{tag}' for tag in tags])}"
+    upload_video(output_video_path, censored_title, description, tags)
 
 if __name__ == "__main__":
     parser = argparse.ArgumentParser(description="Run the main video generation pipeline.")

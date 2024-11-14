@@ -8,6 +8,11 @@
 - [x] Create script to tie all together (Post search -> Post parsing -> Generate audio -> Generate CC -> Generate video)
 - [x] Create script to generate thumbnail
 - [x] Create/find profanity filter
-- [ ] Research how to programmatically upload videos to youtube
-- [ ] Create script to tie all together (Post search -> Post parsing -> Generate audio -> Update audio -> Generate CC -> Generate thumbnail -> Generate composite video -> Upload to YT)
+- [x] Research how to programmatically upload videos to youtube
+- [x] Create script to tie all together (Post search -> Post parsing -> Generate audio -> Update audio -> Generate CC -> Generate thumbnail -> Generate composite video -> Upload to YT)
+- [ ] Consider edge cases (video too short for audio) 
+- [ ] If video too long start from random time tag
+- [ ] Improve thumbnail generation
+- [ ] Improve final video quality
+- [ ] 
 - [ ] 

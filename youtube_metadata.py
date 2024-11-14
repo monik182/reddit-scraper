@@ -16,7 +16,6 @@ def generate_youtube_metadata(post_path, output_path):
 
     post_title = post_data.get("title", "")
     post_content = post_data.get("selftext", "")
-    print(f"Generating metadata for post: {post_title}")
 
     messages = [
         {"role": "system", "content": "You are a youtube video creator."},
@@ -39,20 +38,17 @@ def generate_youtube_metadata(post_path, output_path):
     )
 
     response_text = response.choices[0].message.content.strip()
-    print("Response:", response_text)
 
-    summary, tags = response_text.split("Tags:") if "Tags:" in response_text else (response_text, "")
-    tags_list = [tag.strip() for tag in tags.split(",") if tag.strip()]
+    summary, tags = response_text.split("**Tags:**") if "**Tags:**" in response_text else (response_text, "")
+    tags_list = [tag.strip() for tag in tags.replace("#", "").split(" ") if tag.strip() and tag.isalnum()]
 
-    print("Summary:")
-    print(summary.strip())
-    print("\nTags:")
-    print(", ".join(tags_list))
 
     metadata = {
         "title": post_title,
-        "summary": summary.strip(),
+        "summary": summary.strip().replace("\n", " ").replace("**Video Summary:**", ""),
         "tags": tags_list
     }
     with open(output_path, "w", encoding="utf-8") as metadata_file:
         json.dump(metadata, metadata_file, indent=4)
+
+    return metadata
