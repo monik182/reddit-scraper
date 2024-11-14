@@ -10,9 +10,9 @@
 - [x] Create/find profanity filter
 - [x] Research how to programmatically upload videos to youtube
 - [x] Create script to tie all together (Post search -> Post parsing -> Generate audio -> Update audio -> Generate CC -> Generate thumbnail -> Generate composite video -> Upload to YT)
+- [ ] Create pipeline for shorts
+- [ ] Improve final video quality
+- [ ] Improve thumbnail generation
 - [ ] Consider edge cases (video too short for audio) 
 - [ ] If video too long start from random time tag
-- [ ] Improve thumbnail generation
-- [ ] Improve final video quality
-- [ ] 
 - [ ] 
