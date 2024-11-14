@@ -13,11 +13,17 @@ SCOPES = ["https://www.googleapis.com/auth/youtube.upload"]
 CLIENT_SECRETS_FILE = os.getenv("YOUTUBE_CLIENT_SECRETS_FILE")
 
 
-def upload_video(video_file_path, title, description, tags, thumbnail_path=None, category_id="22", privacy_status="public"):
+def upload_video(video_file_path, title, description, tags, thumbnail_path=None, short=False, category_id="22", privacy_status="public"):
     flow = google_auth_oauthlib.flow.InstalledAppFlow.from_client_secrets_file(
         CLIENT_SECRETS_FILE, SCOPES)
     credentials = flow.run_local_server(port=0)
     youtube = googleapiclient.discovery.build("youtube", "v3", credentials=credentials)
+
+    if len(title) > 70:
+        title = title[:60] + "..."
+    
+    if short:
+        title = f"{title} #shorts"
 
     body = {
         "snippet": {
@@ -71,5 +77,3 @@ if __name__ == "__main__":
     video_tags = [tag.strip() for tag in tags if tag.strip().isalnum()]
     
     upload_video(video_path, video_title, video_description, video_tags, thumbnail_path)
-
-
