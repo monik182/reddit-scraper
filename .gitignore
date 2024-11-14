@@ -166,3 +166,4 @@ cython_debug/
 *.mp4
 *.srt
 *log*
+client_secrets.json

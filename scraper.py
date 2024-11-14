@@ -108,5 +108,5 @@ def main():
     generate_cc("en.mp3", "es")
 
 
-if __name__ == "__main__":
-    main()
+# if __name__ == "__main__":
+#     main()
