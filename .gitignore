@@ -167,3 +167,4 @@ cython_debug/
 *.srt
 *log*
 client_secrets.json
+.DS_Store
