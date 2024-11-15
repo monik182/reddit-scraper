@@ -37,12 +37,12 @@ def log_generated_video(post_id, video_path):
         log.write(f"{post_id} | {video_path}\n")
 
 
-def main(subreddit_name="learnpython"):
+def main(subreddit_name="learnpython", short=False):
     logged_video_ids = load_logged_video_ids()
 
     scraped_posts = list(reddit_output_dir.glob("*.json"))
 
-    posts_without_videos = [post for post in scraped_posts if post.stem not in logged_video_ids and subreddit_name in post.stem]
+    posts_without_videos = [post for post in scraped_posts if post.stem not in logged_video_ids and "10mmqix" in post.stem]
 
     if not posts_without_videos:
         scrape_long_posts(subreddit_name, limit=10)
@@ -66,7 +66,10 @@ def main(subreddit_name="learnpython"):
         censored_content = censor_profanities(content)
         full_text = censored_title + "\n" + censored_content
         print(f"2. ----------- Generating audio for post: {post_id} -----------")
-        generate_audio(full_text, str(audio_path))
+        speed = 1.0
+        if short:
+            speed = 1.4
+        generate_audio(full_text, str(audio_path), speed=speed)
 
     print(f"3. ----------- Generating CC for post: {post_id} -----------")
     cc_path = generate_cc(str(audio_path))
@@ -79,7 +82,8 @@ def main(subreddit_name="learnpython"):
 
 
     print("5. ----------- Generate Thumbnail -----------")
-    generate_thumbnail(censored_title, template_image, str(output_folder / f"{post_id}_thumbnail.png"))
+    thumbnail_output_path = output_folder / f"{post_id}_thumbnail.png"
+    generate_thumbnail(censored_title, template_image, str(thumbnail_output_path))
 
     print("6. ----------- Generate metadata -----------")
     metadata_path = output_folder / f"{post_id}_metadata.json"
@@ -87,7 +91,7 @@ def main(subreddit_name="learnpython"):
 
     print(f"7. ----------- Generating video for post: {post_id} -----------")
     output_video_path = output_folder / f"{post_id}_final_video.mp4"
-    generate_video(str(selected_video), str(audio_path), str(output_video_path), str(cc_path))
+    generate_video(str(selected_video), str(audio_path), str(output_video_path), str(cc_path), short)
 
     print(f"8. ----------- Logging generated video: {post_id} -----------")
     log_generated_video(post_id, str(output_video_path))
@@ -95,12 +99,14 @@ def main(subreddit_name="learnpython"):
     print(f"9. ----------- Upload generated video to YouTube: {post_id} -----------")
     metadata = json.loads(metadata_path.read_text())
     tags = metadata.get("tags", [])
-    description = f"{metadata.get('summary', '')} \n\nTags: {', '.join([f'#{tag}' for tag in tags])}"
-    upload_video(output_video_path, censored_title, description, tags)
+    description = f"{metadata.get('summary', '')} \n\n{', '.join([f'#{tag}' for tag in tags])}"
+    upload_video(output_video_path, censored_title, description, tags, str(thumbnail_output_path), short=short)
 
 if __name__ == "__main__":
     parser = argparse.ArgumentParser(description="Run the main video generation pipeline.")
     parser.add_argument("subreddit_name", type=str, help="The name of the subreddit to scrape posts from.")
+    parser.add_argument("--short", action="store_true", help="Flag to indicate if the video should be uploaded as a YouTube Short.")
     args = parser.parse_args()
+    print("short", args.short)
 
-    main(subreddit_name=args.subreddit_name)
+    main(subreddit_name=args.subreddit_name, short=args.short)
