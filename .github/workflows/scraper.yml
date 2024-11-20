@@ -39,4 +39,4 @@ jobs:
           TEMP_CLIENT_SECRETS_FILE: ${{ secrets.TEMP_CLIENT_SECRETS_FILE }}
           YOUTUBE_CLIENT_SECRETS_FILE: ${{ secrets.YOUTUBE_CLIENT_SECRETS_FILE }}
         run: |
-          python main.py --subreddit_name "random"
+          python main.py random
