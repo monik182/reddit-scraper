@@ -1,6 +1,7 @@
 import json
 import random
 from pathlib import Path
+from scripts.youtube_video_downloader import download_videos
 from scripts.profanity_censor import censor_profanities
 from scripts.generate_audio import generate_audio
 from scripts.generate_thumbnail import generate_thumbnail
@@ -82,10 +83,11 @@ def main(subreddit_name, short=False):
 
     video_files = list(video_input_dir.glob("*.mp4"))
     if not video_files:
-        raise FileNotFoundError("No video files found in the video folder.")
+        print("No video files found in the video folder, downloading a YouTube video...")
+        download_videos(['https://www.youtube.com/watch?v=u7kdVe8q5zs'], video_input_dir)
+        video_files = list(video_input_dir.glob("*.mp4"))
     selected_video = random.choice(video_files)
     print(f"4. ----------- Selected video from {video_input_dir}: {len(video_files)} | {selected_video} -----------")
-
 
     print("5. ----------- Generate Thumbnail -----------")
     thumbnail_output_path = output_folder / f"{post_id}_thumbnail.png"
@@ -114,5 +116,11 @@ if __name__ == "__main__":
     parser.add_argument("--short", action="store_true", help="Flag to indicate if the video should be uploaded as a YouTube Short.")
     args = parser.parse_args()
     print("short", args.short)
+    subreddit_name = args.subreddit_name
+    subreddits = ['MaliciousCompliance', 'AmItheAsshole', 'FamilySecrets']
 
-    main(subreddit_name=args.subreddit_name, short=args.short)
+    if args.subreddit_name == 'random':
+        subreddit_name = random.choice(subreddits)
+
+    print(f"Generating video for subreddit: {subreddit_name}")
+    main(subreddit_name=subreddit_name, short=args.short)
