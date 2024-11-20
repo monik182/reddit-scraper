@@ -1,6 +1,8 @@
 import yagmail
 import os
 import time
+import pytz
+from datetime import datetime
 from dotenv import load_dotenv
 load_dotenv()
 
@@ -16,6 +18,10 @@ def send_test_email():
 
     yag.send(to=recipient, subject=subject, contents=body)
     print("Email sent successfully!")
+    # Print current timezone
+    tz = pytz.timezone('UTC')
+    current_time = datetime.now(tz)
+    print(f"Current Time (UTC): {current_time.strftime('%Y-%m-%d %H:%M:%S %Z%z')}")
 
 if __name__ == "__main__":
     send_test_email()
