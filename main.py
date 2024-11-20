@@ -1,28 +1,34 @@
 import json
 import random
 from pathlib import Path
-from profanity_censor import censor_profanities
-from generate_audio import generate_audio
-from generate_thumbnail import generate_thumbnail
-from generate_video import generate_video
-from scraper import generate_cc
-from youtube_metadata import generate_youtube_metadata
-from scrape_bulk import scrape_long_posts
-from youtube_upload import upload_video
+from scripts.profanity_censor import censor_profanities
+from scripts.generate_audio import generate_audio
+from scripts.generate_thumbnail import generate_thumbnail
+from scripts.generate_video import generate_video
+from scripts.generate_cc import generate_cc
+from scripts.youtube_metadata import generate_youtube_metadata
+from scripts.scrape_bulk import scrape_long_posts
+from scripts.youtube_upload import upload_video
 from dotenv import load_dotenv
 import argparse
 
 load_dotenv()
 
 
-output_dir = Path("output")
 root_dir = Path(".")
-reddit_output_dir = Path("output_reddit_posts")
-video_input_dir = Path("output_videos")
-thumbnail_output_dir = Path("output_thumbnails")
+logs_dir = Path("logs")
+output_dir = Path("output")
+resources_dir = Path("resources")
+videos_dir = Path("videos")
+
 output_dir.mkdir(exist_ok=True)
-video_log_file = root_dir / "generated_videos_log.txt"
-template_image = root_dir / "template_image.png"
+
+reddit_output_dir = Path("output_reddit_posts")
+thumbnail_output_dir = Path("output_thumbnails")
+
+video_input_dir = videos_dir / "input_videos"
+template_image = resources_dir / "template_image.png"
+video_log_file = logs_dir / "generated_videos_log.txt"
 
 
 def load_logged_video_ids():
@@ -37,7 +43,7 @@ def log_generated_video(post_id, video_path):
         log.write(f"{post_id} | {video_path}\n")
 
 
-def main(subreddit_name="learnpython", short=False):
+def main(subreddit_name, short=False):
     logged_video_ids = load_logged_video_ids()
 
     scraped_posts = list(reddit_output_dir.glob("*.json"))

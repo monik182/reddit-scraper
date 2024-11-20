@@ -2,12 +2,10 @@
 import json
 import random
 from pathlib import Path
-
-from generate_audio import generate_audio
-
+from test_scraper import create_audio, translate_text
+from scripts.generate_audio import generate_audio
 from main import load_logged_video_ids
 
-from scraper import create_audio, translate_text
 
 output_dir = Path("output_test")
 root_dir = Path(".")
@@ -39,7 +37,7 @@ def main():
         # translated_text = translate_text(full_text, "es")
         # create_audio(translated_text, str(audio_path), "nova")
         # create_audio(full_text, str(audio_path), "echo", 1.2)
-        generate_audio(full_text, str(audio_path), "echo", 1.2)
+        # generate_audio(full_text, str(audio_path), "echo", 1.2)
 
 if __name__ == "__main__":
     main()

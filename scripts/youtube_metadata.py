@@ -7,8 +7,6 @@ load_dotenv()
 
 client = OpenAI()
 
-input_dir = Path("output_reddit_posts")
-
 
 def generate_youtube_metadata(post_path, output_path):
     with open(post_path, "r", encoding="utf-8") as file:

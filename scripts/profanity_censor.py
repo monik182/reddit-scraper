@@ -1,4 +1,7 @@
 import re
+from pathlib import Path
+
+resources_dir = Path("resources")
 
 
 def censor_word(match):
@@ -9,7 +12,8 @@ def censor_word(match):
 
 
 def censor_profanities(text, language="en"):
-    with open(f'profanity_list_{language}.txt', 'r', encoding='utf-8') as file:
+    file_path = resources_dir / f'profanity_list_{language}.txt'
+    with open(file_path, 'r', encoding='utf-8') as file:
         profanities = [line.strip() for line in file if line.strip()]
 
     pattern = re.compile(r'\b(' + '|'.join(re.escape(word) for word in profanities) + r')\b', re.IGNORECASE)

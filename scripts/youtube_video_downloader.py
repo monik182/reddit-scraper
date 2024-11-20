@@ -19,3 +19,15 @@ def download_videos(video_list, save_folder):
                 print(f"Downloaded: {output_name}")
         except Exception as e:
             print(f"Failed to download {video_url}: {e}")
+
+
+if __name__ == "__main__":
+    video_links = [
+        'https://www.youtube.com/watch?v=VS3D8bgYhf4',
+        'https://www.youtube.com/watch?v=XBIaqOm0RKQ',
+        'https://www.youtube.com/watch?v=ZtLrNBdXT7M',
+        'https://www.youtube.com/watch?v=u7kdVe8q5zs',
+        'https://www.youtube.com/watch?v=uVKxtdMgJVU',
+        'https://www.youtube.com/watch?v=VAGmUv___iQ',
+    ]
+    download_videos(video_links, "videos/input_videos")

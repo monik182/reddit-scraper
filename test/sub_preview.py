@@ -61,4 +61,4 @@ def preview_subtitle(text, output_image_path):
     background.save(output_image_path)
 
 
-preview_subtitle("chat gpt about", "subtitle_preview.png")
+preview_subtitle("chat gpt about", "test/subtitle_preview.png")

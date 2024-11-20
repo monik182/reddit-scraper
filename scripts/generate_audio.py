@@ -51,7 +51,6 @@ def generate_audio(text, output_file="full_speech.mp3", voice="echo", speed=1.0)
         chunk_file_name = f"chunk_{uuid.uuid4().hex}.mp3"
         create_audio_chunk(chunk, chunk_file_name, voice, speed)
         chunk_files.append(chunk_file_name)
-    # print(chunk_files)
 
     merge_audio_chunks(chunk_files, output_file)
 
