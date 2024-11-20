@@ -47,10 +47,12 @@ Ensure you have a `.env` file with the following environment variables set up:
 - `REDDIT_CLIENT_SECRET`: Your Reddit API client secret.
 - `REDDIT_USER_AGENT`: Your Reddit API user agent.
 - `OPENAI_API_KEY`: Your OpenAI API key.
+- `YOUTUBE_CLIENT_SECRETS_FILE`: Your YouTube client secrets file path.
 
 ## Scripts
 - **scrape_bulk.py**: Scrapes long posts from a specific subreddit.
 - **generate_audio.py**: Generates audio from text using OpenAI's API.
+- **generate_cc.py**: Generates closed captions from audio using OpenAI's API.
 - **generate_thumbnail.py**: Creates a thumbnail for a video.
 - **generate_video.py**: Combines video, audio, and closed captions to generate a final video.
 - **youtube_metadata.py**: Generates YouTube metadata, including video descriptions and tags.
@@ -58,7 +60,6 @@ Ensure you have a `.env` file with the following environment variables set up:
 
 ## Future Improvements
 - Add more sophisticated text analysis to select the most interesting Reddit posts.
-- Improve thumbnail generation by adding more dynamic visuals and elements.
 - Incorporate more advanced NLP models for better summarization and storytelling.
 
 ## License

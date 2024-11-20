@@ -1,13 +1,11 @@
 from pathlib import Path
 
 from scripts.utils import format_time
-from openai import OpenAI
 import whisper
 from dotenv import load_dotenv
 
 whisper_model = whisper.load_model("base")
 load_dotenv()
-client = OpenAI()
 
 
 def generate_cc(audio_path, language="en"):
