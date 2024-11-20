@@ -69,3 +69,5 @@ vimeo-downloader==0.4.1
 websocket-client==1.8.0
 whisper==1.1.10
 yt-dlp==2024.11.4
+yagmail
+keyring
