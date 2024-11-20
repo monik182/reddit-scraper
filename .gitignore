@@ -165,7 +165,6 @@ cython_debug/
 *.mp3
 *.mp4
 *.srt
-*log*
 client_secrets.json
 .DS_Store
 /input_videos
