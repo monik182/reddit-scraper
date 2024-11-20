@@ -48,7 +48,7 @@ def main(subreddit_name, short=False):
 
     scraped_posts = list(reddit_output_dir.glob("*.json"))
 
-    posts_without_videos = [post for post in scraped_posts if post.stem not in logged_video_ids and "10mmqix" in post.stem]
+    posts_without_videos = [post for post in scraped_posts if post.stem not in logged_video_ids and subreddit_name in post.stem]
 
     if not posts_without_videos:
         scrape_long_posts(subreddit_name, limit=10)
