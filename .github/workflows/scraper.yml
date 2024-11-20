@@ -19,6 +19,10 @@ jobs:
         uses: actions/setup-python@v2
         with:
           python-version: '3.11'
+      
+      - name: Clean Whisper Model Cache
+        run: |
+          rm -rf ~/.cache/whisper
 
       - name: Install dependencies
         run: |
