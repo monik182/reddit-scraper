@@ -57,8 +57,8 @@ def main(subreddit_name, short=False):
 
     posts_without_videos = [post for post in scraped_posts if post.stem not in logged_video_ids and subreddit_name in post.stem]
 
-    if not posts_without_videos:
-        scrape_long_posts(subreddit_name, limit=10)
+    if not posts_without_videos or not scraped_posts:
+        scrape_long_posts(subreddit_name, limit=1)
         scraped_posts = list(reddit_output_dir.glob("*.json"))
         posts_without_videos = [post for post in scraped_posts if post.stem not in logged_video_ids]
         print(f"0. ----------- Scraped {len(posts_without_videos)} new posts. -----------")
