@@ -34,13 +34,19 @@ video_log_file = logs_dir / "generated_videos_log.txt"
 
 def load_logged_video_ids():
     if not video_log_file.exists():
+        print("---------------> No video log file found.")
         return set()
     with open(video_log_file, "r", encoding="utf-8") as log:
+        print("---------------> Loading video log file.")
         return set(line.split("|")[1].strip() for line in log.readlines())
 
 
 def log_generated_video(post_id, video_path):
+    if not video_log_file.exists():
+        print("---------------> No generated video log file found.")
+        return set()
     with open(video_log_file, "a", encoding="utf-8") as log:
+        print(f"---------------> Logging generated video: {post_id}")
         log.write(f"{post_id} | {video_path}\n")
 
 
@@ -59,7 +65,7 @@ def main(subreddit_name, short=False):
 
     selected_post = random.choice(posts_without_videos)
     post_id = selected_post.stem
-    print(f"1. ----------- Selected post: {subreddit_name}/{post_id} -----------")
+    print(f"1. ----------- Selected post: {subreddit_name}/{selected_post}/{post_id} -----------")
     output_folder = output_dir / post_id
     output_folder.mkdir(exist_ok=True)
 
