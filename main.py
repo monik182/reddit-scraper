@@ -52,13 +52,14 @@ def log_generated_video(post_id, video_path):
 
 def main(subreddit_name, short=False):
     logged_video_ids = load_logged_video_ids()
+    print(f" ^^^^^^^^^^^^^^^^^^^ Loaded {len(logged_video_ids)} logged video IDs. ----------->", logged_video_ids)
 
     scraped_posts = list(reddit_output_dir.glob("*.json"))
-
+    print(f" ^^^^^^^^^^^^^^^^^^^ existing scraped posts {len(scraped_posts)} ----------->", scraped_posts)
     posts_without_videos = [post for post in scraped_posts if post.stem not in logged_video_ids and subreddit_name in post.stem]
-
+    print(f" ^^^^^^^^^^^^^^^^^^^ posts without videos {len(posts_without_videos)} ----------->", posts_without_videos)
     if not posts_without_videos or not scraped_posts:
-        scrape_long_posts(subreddit_name, limit=1)
+        scrape_long_posts(subreddit_name, reddit_output_dir, limit=1)
         scraped_posts = list(reddit_output_dir.glob("*.json"))
         posts_without_videos = [post for post in scraped_posts if post.stem not in logged_video_ids]
         print(f"0. ----------- Scraped {len(posts_without_videos)} new posts. -----------")
