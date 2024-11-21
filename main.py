@@ -23,6 +23,7 @@ resources_dir = Path("resources")
 videos_dir = Path("videos")
 reddit_output_dir = Path("output_reddit_posts")
 thumbnail_output_dir = Path("output_thumbnails")
+video_input_dir = videos_dir / "input_videos"
 
 output_dir.mkdir(exist_ok=True)
 logs_dir.mkdir(exist_ok=True)
@@ -30,9 +31,8 @@ resources_dir.mkdir(exist_ok=True)
 videos_dir.mkdir(exist_ok=True)
 reddit_output_dir.mkdir(exist_ok=True)
 thumbnail_output_dir.mkdir(exist_ok=True)
+video_input_dir.mkdir(exist_ok=True)
 
-
-video_input_dir = videos_dir / "input_videos"
 template_image = resources_dir / "template_image.png"
 video_log_file = logs_dir / "generated_videos_log.txt"
 
