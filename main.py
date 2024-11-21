@@ -21,11 +21,16 @@ logs_dir = Path("logs")
 output_dir = Path("output")
 resources_dir = Path("resources")
 videos_dir = Path("videos")
-
-output_dir.mkdir(exist_ok=True)
-
 reddit_output_dir = Path("output_reddit_posts")
 thumbnail_output_dir = Path("output_thumbnails")
+
+output_dir.mkdir(exist_ok=True)
+logs_dir.mkdir(exist_ok=True)
+resources_dir.mkdir(exist_ok=True)
+videos_dir.mkdir(exist_ok=True)
+reddit_output_dir.mkdir(exist_ok=True)
+thumbnail_output_dir.mkdir(exist_ok=True)
+
 
 video_input_dir = videos_dir / "input_videos"
 template_image = resources_dir / "template_image.png"
