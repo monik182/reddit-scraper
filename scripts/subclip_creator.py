@@ -2,6 +2,7 @@ import os
 import moviepy.editor as mp
 from pathlib import Path
 
+
 def create_subclips(video_paths, output_folder, subclip_duration):
     if not os.path.exists(output_folder):
         os.makedirs(output_folder)

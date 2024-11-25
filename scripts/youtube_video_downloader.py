@@ -1,6 +1,6 @@
 import os
 
-from cookie_creator import create_cookies
+from scripts.cookie_creator import create_cookies
 import yt_dlp
 
 
