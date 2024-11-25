@@ -1,10 +1,15 @@
 import os
+
+from cookie_creator import create_cookies
 import yt_dlp
 
 
 def download_videos(video_list, save_folder):
     if not os.path.exists(save_folder):
         os.makedirs(save_folder)
+    
+    if not os.path.exists(os.getenv('COOKIES_FILE')):
+        create_cookies()
 
     for idx, video_url in enumerate(video_list):
         output_name = f"video{idx}-yt"
@@ -12,7 +17,8 @@ def download_videos(video_list, save_folder):
         try:
             ydl_opts = {
                 'merge_output_format': 'mp4',
-                'outtmpl': os.path.join(save_folder, f"{output_name}.mp4")
+                'outtmpl': os.path.join(save_folder, f"{output_name}.mp4"),
+                'cookies': 'cookies.txt',
             }
             with yt_dlp.YoutubeDL(ydl_opts) as ydl:
                 ydl.download([video_url])
