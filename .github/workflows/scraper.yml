@@ -1,9 +1,9 @@
 name: Daily Reddit Scraper
 
 on:
-  schedule:
-    # Runs at 8 AM, 2 PM, and 9 PM (UTC-5)
-    - cron: '0 13,19,2 * * *'
+  push:
+    branches:
+      - main 
   workflow_dispatch:
 
 jobs:
